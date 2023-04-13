@@ -1,19 +1,20 @@
 package BloodBank;
 
-import Repository.UserRepository;
-import controller.UserController;
-import facade.UserFacadeImpl;
-import model.Role;
-import model.User;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import service.UserService;
-import service.impl.UserServiceImpl;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @SpringBootApplication
-public class BloodBankApplication {
+@EnableWebMvc
+public class BloodBankApplication extends SpringBootServletInitializer {
 
-	public static void main(String[] args) {
+	@Override
+	protected SpringApplicationBuilder configure(SpringApplicationBuilder applicationBuilder){
+		return applicationBuilder.sources(BloodBankApplication.class);
+	}
+	public static void main(String[] args) throws Exception{
 		SpringApplication.run(BloodBankApplication.class, args);
 
 
