@@ -16,7 +16,7 @@ const location=useLocation();
 const navigate=useNavigate();
 const uuid=location.state.uuid;
 
-
+//NU MEEEEEEEEERGE SI NU INTELEG DEEE CEEEE
 
 async function deleteAccount(email)
 {
