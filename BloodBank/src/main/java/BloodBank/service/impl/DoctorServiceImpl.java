@@ -3,10 +3,12 @@ package BloodBank.service.impl;
 
 import BloodBank.Repository.DoctorRepository;
 import BloodBank.model.Doctor;
-import BloodBank.model.Role;
 import BloodBank.service.DoctorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.UUID;
 
 @Service
 public class DoctorServiceImpl implements DoctorService {
@@ -21,18 +23,22 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Override
     public Doctor registerDoctor(Doctor doctor) {
-        Doctor newDoctor= doctorRepository.save(doctor);
+        Doctor newDoctor=(Doctor) doctorRepository.save(doctor);
         return doctor;
     }
 
     @Override
-    public Doctor getDoctor(String verification) {
-        return null;
+    public List<Doctor> getDoctors() {
+        List<Doctor> doctorList=doctorRepository.findAll();
+        if(doctorList!=null)
+            return doctorList;
+        else
+            return null;
     }
 
     @Override
     public Doctor findDoctorByEmail(String email) {
-        Doctor found = doctorRepository.findDoctorByEmail(email);
+        Doctor found =(Doctor) doctorRepository.findDoctorByEmail(email);
         if (found!=null)
             return found;
         else return null;
@@ -49,10 +55,9 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
 
-
     @Override
     public Doctor loginDoctor(String password, String email) {
-        Doctor found = doctorRepository.findDoctorByEmailAndPassword(email,password);
+        Doctor found =(Doctor) doctorRepository.findDoctorByEmailAndPassword(email,password);
         if (found!=null)
             return found;
         else return null;
@@ -60,13 +65,22 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
-    public Doctor editDoctor(Doctor newDoctor)
+    public Doctor editDoctor(Doctor newDoctor, UUID oldUUID)
     {
-       Doctor renewed= doctorRepository.save(newDoctor);
-        return renewed;
+        doctorRepository.updateDoctor(newDoctor.name, newDoctor.email, newDoctor.password, newDoctor.specialization,oldUUID);
+        return newDoctor;
     }
 
+    public void deleteDoctor(Doctor doctor)
+    {
+        doctorRepository.delete(doctor);
 
+    }
 
+    public Doctor findDoctorByUUID(UUID uuid)
+    {
+        Doctor found =doctorRepository.findDoctorByUuid(uuid);
+        return found;
+    }
 
 }

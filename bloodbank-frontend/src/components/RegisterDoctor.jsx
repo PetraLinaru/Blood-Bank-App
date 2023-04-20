@@ -5,29 +5,31 @@ import { Autocomplete } from "@mui/material";
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-function Register(){
+function RegisterDoctor(){
+    const [uuid,setUUID]=useState("");
     const [name, setName] = useState("");
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
     const [role, setRole] = useState("");
-    const [blood_type, setBloodType] = useState("");
-    const options =["A", "B", "AB", "O"];
+    const [specialization, setSpecialization] = useState("");
 
     async function save(event){
     event.preventDefault();
         try {
             const instance=axios.create();
-            await  instance.post('http://localhost:8080/donor/register',
-             {name : name,
+            await  instance.post('http://localhost:8080/doctor/register',
+             {
+            uuid: uuid,
+            name : name,
             password :password,
             email :email,
-            role :"DONOR",
-            blood_type:blood_type},
+            role :"DOCTOR",
+            specialization:specialization},
             {headers: {
                 'Content-Type': 'application/json'
                 }});
         
-        alert ("You have been registered successfully!");
+        alert ("You have added a doctor successfully!");
         }
         catch (error) {
            alert(error);
@@ -37,39 +39,32 @@ function Register(){
         <div>
             <div class ="container mt-4">
                 <div class ="card">
-                <h1>Welcome to the BloodBank</h1>
-                <h2>Register now!</h2>
+                <h1>Add a new doctor</h1>
                 <form>
                     <div class="form-group">
                         <label> Your name </label>
-                        <input type="text" class="form-control" id =  "name" placeholder="Enter your name"
+                        <input type="text" class="form-control" id =  "name" placeholder="Enter doctor's name" allign="center"
                             value={name}
                             onChange={(e) => setName(e.target.value)}/>
                     </div>
-
                     <div class="form-group">
                         <label> Your email </label>
-                        <input type="email" class="form-control" id =  "email" placeholder="Enter your email"
+                        <input type="email" class="form-control" id =  "email" placeholder="Enter doctor's email" allign="center"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}/>
                     </div>
 
                     <div class="form-group">
                         <label> Your password </label>
-                        <input type="password" class="form-control" id =  "password" placeholder="Enter your password"
+                        <input type="password" class="form-control" id =  "password" placeholder="Enter doctor's password" allign="center"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}/>
                     </div>
                     <div class="form-group">
-                        <label> Your blood type </label>
-                        <Autocomplete
-                            disablePortal
-                        id="combo-box-demo"
-                        options={options}
-                        sx={{ width: 300 }}
-                        renderInput={(params) => <TextField {...params} label="Your Blood Type" />}
-                        onChange={(e) => setBloodType(e.target.value)}
-                        />
+                        <label> Your specialization </label>
+                        <input type="password" class="form-control" id =  "password" placeholder="Enter doctor's specialization" allign="center"
+                            value={specialization}
+                            onChange={(e) => setSpecialization(e.target.value)}/>
                     </div>
                     <button type="submit" class="btn btn-primary" onClick={save}>save</button>
                 </form>
@@ -79,4 +74,4 @@ function Register(){
     );
 
 }
-export default Register;
+export default RegisterDoctor;

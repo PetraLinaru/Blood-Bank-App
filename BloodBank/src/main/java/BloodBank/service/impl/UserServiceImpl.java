@@ -38,6 +38,14 @@ public class UserServiceImpl implements UserService {
    }
 
    @Override
+   public User findUserByEmailAndPassword(String email, String password) {
+      User found = userRepository.findUserByEmailAndPassword(email,password);
+      if (found!=null)
+         return found;
+      else return null;
+   }
+
+   @Override
    public User findMaybeExistingUser(String firstName, String lastName, String email)
    {
 //      User found=userRepository.findUserByEmailAndFirstNameAndLastName(email,firstName,lastName);
@@ -57,7 +65,6 @@ public class UserServiceImpl implements UserService {
       else return null;
 
    }
-
    @Override
    public User editUser(User newUser)
    {
@@ -65,6 +72,10 @@ public class UserServiceImpl implements UserService {
       return renewed;
    }
 
+   public void deleteUser(User oldUser)
+   {
+      userRepository.delete(oldUser);
+   }
 
 
 

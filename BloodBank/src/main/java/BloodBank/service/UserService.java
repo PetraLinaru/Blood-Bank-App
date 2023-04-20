@@ -9,6 +9,8 @@ public interface UserService {
 
 //extras
     User findUserByEmail(String email);
+    User findUserByEmailAndPassword(String email,String password);
     User findMaybeExistingUser(String firstName, String lastName, String email);
     User editUser(User oldUser);
+    void deleteUser(User found);
 }

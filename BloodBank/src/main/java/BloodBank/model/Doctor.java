@@ -1,10 +1,12 @@
 package BloodBank.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name="doctor")
+@PrimaryKeyJoinColumn(name = "uuid")
 public class Doctor extends User{
     public String specialization;
 
