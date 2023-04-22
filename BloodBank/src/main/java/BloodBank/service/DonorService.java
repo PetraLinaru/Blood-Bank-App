@@ -18,4 +18,6 @@ public interface DonorService {
     Donor editDonor(Donor oldDonor);
     Donor getDonorByUuid(UUID uuid);
     void deleteDonor(Donor donor);
+    Donor updateDonor(Donor donor, UUID uuid);
+
 }

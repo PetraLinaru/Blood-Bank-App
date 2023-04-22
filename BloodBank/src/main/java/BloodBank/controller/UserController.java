@@ -1,12 +1,11 @@
 package BloodBank.controller;
 
-import BloodBank.facade.UserFacade;
 import BloodBank.model.User;
 import BloodBank.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/user")
@@ -31,13 +30,12 @@ public class UserController {
     @GetMapping("/find/{email}")
     public ResponseEntity<User> getUserByEmail(@PathVariable("email")String email)
     {
+        System.out.println(email);
         User registeredUser = userService.findUserByEmail(email);
         System.out.println(registeredUser.email);
         return ResponseEntity.ok(registeredUser);
 
     }
-
-
 
     @PostMapping("/login")
     public ResponseEntity<User> loginUser(@RequestBody User user)
@@ -52,10 +50,12 @@ public class UserController {
     }
 
 
-    @PostMapping("/deleteDoc/{email}")
+    @PostMapping("/deleteUser/{email}")
     public void deleteUser(@PathVariable("email")String email)
     {
         User found = userService.findUserByEmail(email);
+        System.out.println(found.email);
+        System.out.println("aici ba!");
         if (found!=null)
         {
             userService.deleteUser(found);
@@ -63,6 +63,18 @@ public class UserController {
         }
     }
 
+    @GetMapping("/findUUID/{uuid}")
+    public ResponseEntity<User> findUserByUUID(@PathVariable("uuid") UUID uuid)
+    {
+        User found=userService.findUserByUuid(uuid);
+        if(found!=null)
+        {
+            return ResponseEntity.ok(found);
+        }
+        else
+            return (ResponseEntity<User>) ResponseEntity.internalServerError();
+
+    }
 
 
 

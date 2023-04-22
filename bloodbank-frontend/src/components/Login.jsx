@@ -1,5 +1,5 @@
 import {  useState, useContext } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, createSearchParams } from 'react-router-dom';
 import axios from "axios";
  
  
@@ -8,6 +8,7 @@ function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [user, setUser] = useState("");
+    const [uuid, setUuid] = useState("");
     const navigate = useNavigate();
 
     
@@ -23,13 +24,16 @@ function Login() {
 
              console.log(res);
              const myUser=res.data;
+            
              setUser(myUser);
-             console.log(myUser.name);
+             setUuid(myUser.uuid);
+           
  
               if(myUser.role == "DONOR")
              {
                 alert("ur a donor")
-                navigate('/donorhome',{state: {id: myUser.uuid}});
+                navigate({pathname:'/donorhome' , search:createSearchParams({uuid:myUser.uuid}).toString()});
+                console.log(myUser.uuid);
              }
               if(myUser.role == "ADMIN")
               {

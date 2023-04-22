@@ -1,13 +1,9 @@
 package BloodBank.service.impl;
 
 import BloodBank.Repository.DonorRepository;
-import BloodBank.model.Doctor;
 import BloodBank.model.Donor;
-import BloodBank.model.User;
 import BloodBank.service.DonorService;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.UUID;
 
@@ -67,4 +63,14 @@ public class DonorServiceImpl implements DonorService {
     {
         donorRepository.delete(donor);
     }
+
+
+
+    @Override
+    public Donor updateDonor(Donor newDonor, UUID oldUUID)
+    {
+        donorRepository.updateDonor(newDonor.name, newDonor.email, newDonor.password, newDonor.blood_type,oldUUID);
+        return newDonor;
+    }
+
 }

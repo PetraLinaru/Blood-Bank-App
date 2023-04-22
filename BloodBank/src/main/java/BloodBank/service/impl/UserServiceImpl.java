@@ -6,6 +6,8 @@ import BloodBank.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -75,6 +77,12 @@ public class UserServiceImpl implements UserService {
    public void deleteUser(User oldUser)
    {
       userRepository.delete(oldUser);
+   }
+
+   public User findUserByUuid(UUID uuid)
+   {
+      User found=userRepository.findUserByUuid(uuid);
+      return found;
    }
 
 

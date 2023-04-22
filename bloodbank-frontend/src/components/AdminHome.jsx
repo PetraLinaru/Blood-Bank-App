@@ -19,7 +19,7 @@ function AdminHome() {
     }, []);
 
       async function deleteDoctors  (email)  {
-        const url = 'http://localhost:8080/user/deleteDoc/'+email;
+        const url = 'http://localhost:8080/user/deleteUser/'+email;
         axios
             .post(url)
             .then((res) => { 

@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import EditWindow from './components/EditWindow';
 import RegisterDoctor from './components/RegisterDoctor';
 import DonorHome from './components/DonorHome';
+import EditDonor from './components/EditDonor';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
               <Route path="/editwindow" element={ <EditWindow/>}/>
               <Route path="/donorhome" element ={<DonorHome/> }/>
               <Route path="/registerdoctor" element={ <RegisterDoctor/>}/>
+              <Route path="/editdonor" element={ <EditDonor/>}/>
               <Route path="/" element= { <Home/>} />
             </Routes>
   </BrowserRouter>

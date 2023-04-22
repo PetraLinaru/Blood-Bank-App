@@ -20,33 +20,40 @@ public class DonorController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Donor> registerUser(@RequestBody Donor donor)
-    {
+    public ResponseEntity<Donor> registerUser(@RequestBody Donor donor) {
         Donor registeredDonor = donorService.registerDonor(donor);
         return ResponseEntity.ok(registeredDonor);
     }
 
     @GetMapping("/find/{email}")
-    public ResponseEntity<User> getUserByEmail(@PathVariable("email")String email)
-    {
+    public ResponseEntity<User> getUserByEmail(@PathVariable("email") String email) {
         Donor found = donorService.findDonorByEmail(email);
         return ResponseEntity.ok(found);
     }
 
     @GetMapping("/getByUUID/{uuid}")
-    public ResponseEntity<Donor> getDonorByUUID(@PathVariable("uuid") UUID uuid)
-    {
+    public ResponseEntity<Donor> getDonorByUUID(@PathVariable("uuid") UUID uuid) {
         Donor registeredDonor = donorService.getDonorByUuid(uuid);
         return ResponseEntity.ok(registeredDonor);
     }
 
     @PostMapping("/deleteDonor/{email}")
-    public void deleteDonor(@PathVariable("email")String email)
-    {
+    public void deleteDonor(@PathVariable("email") String email) {
         Donor found = donorService.findDonorByEmail(email);
-        if (found!=null)
-        {
+        if (found != null) {
             donorService.deleteDonor(found);
         }
+    }
+
+    @PostMapping("/updateDonor")
+    public ResponseEntity<Donor> updateDoctor(@RequestBody Donor donor) {
+        Donor found = donorService.getDonorByUuid(donor.uuid);
+        if (found != null) {
+            Donor renewed = donorService.updateDonor(donor, donor.uuid);
+
+            return ResponseEntity.ok(renewed);
+        }
+        else
+        return (ResponseEntity<Donor>)ResponseEntity.internalServerError();
     }
 }
