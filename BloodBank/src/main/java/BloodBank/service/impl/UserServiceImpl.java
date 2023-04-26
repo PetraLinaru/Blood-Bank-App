@@ -13,8 +13,7 @@ public class UserServiceImpl implements UserService {
 
    final UserRepository userRepository;
 
-//aici am pus si operatiile crud pe doctor aka ma loghez si daca user.role=admin aleg ce fel de cont vreau sa creez(setez rol)
-   //apoi userii vor fi tratati ca si donor/doc in functie de enum
+
    @Autowired
    public UserServiceImpl(UserRepository userRepository) {
       this.userRepository = userRepository;

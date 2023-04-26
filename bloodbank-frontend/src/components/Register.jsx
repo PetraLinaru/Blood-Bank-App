@@ -10,7 +10,7 @@ function Register(){
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
     const [role, setRole] = useState("");
-    const [blood_type, setBloodType] = useState("");
+    const [blood_type, setBloodType] = useState('blood_type');
     const options =["A", "B", "AB", "O"];
 
     async function save(event){
@@ -63,12 +63,17 @@ function Register(){
                     <div class="form-group">
                         <label> Your blood type </label>
                         <Autocomplete
+                        value={blood_type}
+                        onChange={(event, blood_type) => {
+                          setBloodType(blood_type)
+                        }}
                             disablePortal
                         id="combo-box-demo"
                         options={options}
+
                         sx={{ width: 300 }}
                         renderInput={(params) => <TextField {...params} label="Your Blood Type" />}
-                        onChange={(e) => setBloodType(e.target.value)}
+                       
                         />
                     </div>
                     <button type="submit" class="btn btn-primary" onClick={save}>save</button>

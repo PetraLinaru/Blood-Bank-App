@@ -3,6 +3,7 @@ package BloodBank.service.impl;
 import BloodBank.Repository.DonorRepository;
 import BloodBank.model.Donor;
 import BloodBank.service.DonorService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -11,6 +12,7 @@ import java.util.UUID;
 public class DonorServiceImpl implements DonorService {
     DonorRepository donorRepository;
 
+    @Autowired
     public DonorServiceImpl(DonorRepository donorRepository) {
         this.donorRepository = donorRepository;
     }

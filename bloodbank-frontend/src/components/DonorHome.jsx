@@ -8,6 +8,7 @@ import { StepContext } from '@mui/material';
 
 function DonorHome(){
 const [currentUser,setCurrentUser]=useState("");
+const [locations,setLocations]=useState([]);
 const [name,setName]=useState("");
 const [email,setEmail]=useState("");
 const [password,setPassword]=useState("");
@@ -17,6 +18,7 @@ const [searchparams] =useSearchParams();
 const useruuid=searchparams.get('uuid');
 
 const navigate=useNavigate();
+let index=1;
 
 
 useEffect( () => {
@@ -36,6 +38,24 @@ useEffect( () => {
             alert(err);
         }
     }
+
+    async function getLocations()
+    {
+        try
+        {
+            const url = 'http://localhost:8080/location/all';
+            const data = { };
+            const config = { 'content-type': 'application/json' };
+            const res = await axios.get(url, data, config);
+            const locations=res.data;
+            setLocations(locations);
+            console.log(locations);
+        }
+        catch(err)
+        {
+            alert(err);
+        }
+    }
    
     const uuid1=searchparams.get('uuid');
    console.log(uuid1)
@@ -46,6 +66,8 @@ useEffect( () => {
     setPassword(currentUser.password);
     setBloodType(currentUser.blood_type);
     setUuid(currentUser.uuid);
+
+    getLocations();
 
 }, []);
 
@@ -82,7 +104,39 @@ async function edit()
             </h1>
             <Button variant="contained" color="primary" text="Edit" onClick={edit}>Edit Account</Button>
             <Button variant="contained" color="secondary" text="Delete" onClick={deleteAccount}>Delete Account</Button>
-        </div>
+
+            <h2>
+                All our locations:
+            </h2>
+
+            <table>
+                <tr>
+                    <th>Location ID</th>
+                    <th>Location Name</th>
+                    <th>City</th>
+                    <th>Region</th>
+
+                </tr>
+                { 
+                    locations && locations.map((location) => (
+                        
+                        <tr>
+                            <td>{index++} </td>
+                            <td>{location.location_name}</td>
+                            <td>{location.city}</td>
+                            <td>{location.region}</td>
+                            
+                        </tr>
+                        
+                    ))
+                }
+            </table>
+
+            <h1>Wanna make an appointment?</h1>
+            <Button variant="contained" color="primary" text="Make an appointment" onClick={()=>navigate({pathname:'/createappointment', search:createSearchParams({uuid:useruuid}).toString()})}>Make an appointment</Button>
+
+
+        </div>  
 
     );
 }

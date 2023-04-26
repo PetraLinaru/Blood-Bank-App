@@ -42,7 +42,8 @@ function Login() {
               }
               if(myUser.role=="DOCTOR")
               {
-                navigate('/doctorhome');
+                navigate({pathname:'/doctorhome' , search:createSearchParams({uuid:myUser.uuid}).toString()});
+                console.log(myUser.uuid)
                 alert("ur a doc");
              }
           }
