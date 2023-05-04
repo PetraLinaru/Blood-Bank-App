@@ -8,12 +8,18 @@ function Home() {
     const goToRegister = () => navigate('/register');
     return (
       <div>
-   
-       <h1>Home</h1>
-         <p>Home page</p>
+      
+      <div class="container">
+            <div class="row">
+                <h2>Home</h2>
+             <hr/>
+              </div>
+              </div>
+              <form>
          <Button variant="contained" color="primary" text="Login" onClick={goToLogin}>Login</Button>
+         &nbsp;&nbsp;&nbsp;
          <Button variant="contained" color="primary" text="Register" onClick={goToRegister}>Register</Button>
-        
+        </form>
       </div>
     );
   }

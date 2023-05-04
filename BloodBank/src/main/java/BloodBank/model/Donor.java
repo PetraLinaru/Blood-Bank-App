@@ -24,4 +24,6 @@ public class Donor extends User{
     public Donor() {
 
     }
+
+
 }

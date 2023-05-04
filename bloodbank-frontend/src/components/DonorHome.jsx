@@ -97,12 +97,13 @@ async function edit()
 
     return (
         <div>
+            <form>
             <h1>
-                
                 Welcome !
                 
             </h1>
             <Button variant="contained" color="primary" text="Edit" onClick={edit}>Edit Account</Button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <Button variant="contained" color="secondary" text="Delete" onClick={deleteAccount}>Delete Account</Button>
 
             <h2>
@@ -135,7 +136,7 @@ async function edit()
             <h1>Wanna make an appointment?</h1>
             <Button variant="contained" color="primary" text="Make an appointment" onClick={()=>navigate({pathname:'/createappointment', search:createSearchParams({uuid:useruuid}).toString()})}>Make an appointment</Button>
 
-
+                </form>
         </div>  
 
     );

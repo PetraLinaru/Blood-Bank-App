@@ -47,16 +47,24 @@ public class AppointmentController {
     //Merge, dar fara paginare, am adaugat paginare nu stiu cumm sa duc la capat : nu afiseaza in table :/
     //Daca dau inspect si printez in consola,reusesc sa vad lista cu programarile, dar nu reusesc sa le pun in
     //table
-    @GetMapping("/doc/day/{uuid}/{date}")
+    @GetMapping("/doc/month/{uuid}/{date}")
     public ResponseEntity<Page<Appointment>> getDocsAppointmentsOnMonthDate(
             @PathVariable("uuid") UUID uuid,
             @PathVariable("date") Date date,
             Pageable pageable) {
 
         Page<Appointment> appointmentsList = appointmentService.findDocAppointmentsOnMDate(date, uuid, pageable);
-        for(Appointment a:appointmentsList) {
-            System.out.println(a.getDate());
-        }
+
+        return ResponseEntity.ok(appointmentsList);
+    }
+
+    @GetMapping("/doc/day/{uuid}/{date}")
+    public ResponseEntity<Page<Appointment>> getDocsAppointmentsOnDayDate(
+            @PathVariable("uuid") UUID uuid,
+            @PathVariable("date") Date date,
+            Pageable pageable) {
+
+        Page<Appointment> appointmentsList = appointmentService.findDocAppointmentsOnDDate(date, uuid, pageable);
         return ResponseEntity.ok(appointmentsList);
     }
 

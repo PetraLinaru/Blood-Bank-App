@@ -1,4 +1,3 @@
-
 import{useContext, useState, useEffect} from 'react';
 import { useLocation, useNavigate, useSearchParams,createSearchParams } from 'react-router-dom';
 import TextField from '@material-ui/core/TextField';
@@ -255,6 +254,33 @@ function CreateAppointment(){
                 const appointment=res.data;
                 console.log(res.data)
                 alert("Appointment created successfully!");
+                sendEmail(currentUser.email);
+               // navigate({pathname:'/donorhome' , search:createSearchParams({uuid:currentUser.uuid}).toString()});
+ 
+         }
+            catch(err)
+            {
+                alert(err);
+            }
+        }
+
+        const sendEmail=(email)=> {
+            try
+        {
+            const instance=axios.create();
+           const res=  instance.post('http://localhost:8080/email/send',
+             {
+                toEmail:email,
+                subject:"Appointment created successfully!",
+                message:"Your appointment on "+moment(date).format('YYYY-MM-DD')+" has been created successfully! Please check your appointments page for more details."}
+            ,
+
+            {headers: {
+                'Content-Type': 'application/json'
+                }});
+                const appointment=res.data;
+                console.log(res.data)
+                alert("Email sent successfully!");
                 navigate({pathname:'/donorhome' , search:createSearchParams({uuid:currentUser.uuid}).toString()});
  
          }
@@ -263,6 +289,7 @@ function CreateAppointment(){
                 alert(err);
             }
         }
+
 
     return(
         <div>

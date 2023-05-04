@@ -19,4 +19,11 @@ public interface AppointmentRepository extends JpaRepository<Appointment, UUID> 
 
      @Query(value="SELECT * from appointment a  WHERE MONTH(a.date)=MONTH( :month) AND YEAR(a.date)=YEAR(:year) AND a.docid=(:uuid)",nativeQuery = true)
      Page<Appointment> getMonthAppointments(@Param("month")Date date, @Param("year")Date date2, @Param("uuid") UUID uuid, @Param("") Pageable pageable);
+
+
+     @Query("SELECT a FROM Appointment a WHERE a.date = :tomorrow")
+     List<Appointment> getAppointmentsForTomorrow(@Param("tomorrow") Date tomorrow);
+
+     @Query(value="SELECT * from appointment a  WHERE a.date=(:date) AND a.docid=(:uuid)",nativeQuery = true)
+     Page<Appointment> getDayAppointments(@Param("date")Date date,@Param("uuid") UUID uuid, Pageable page);
 }

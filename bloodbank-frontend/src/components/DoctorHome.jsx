@@ -24,11 +24,12 @@ function DoctorHome(){
     const [mHandler,setMHandler]=useState(false);
     const [yHandler,setYHandler]=useState(false);
     const doc=require('./doc.jpg');
-    var index=0;
+    var index1=0,index2=0;
     var appointmentList
-    const [currentPage, setCurrentPage] = useState(1);
-    const [perPage, setPerPage] = useState(10);
+    const [currentPageMonth, setCurrentPageMonth] = useState(0);
+    const [currentPage, setCurrentPage] = useState(0);	 
     const [totalPages, setTotalPages] = useState(0);
+    const [totalPagesMonth, setTotalPagesMonth] = useState(0);
     
   
 
@@ -38,9 +39,26 @@ function DoctorHome(){
         sort: 'date,desc'
       };
       
-      const handlePageChange = (pageNumber) => {
-        setCurrentPage(pageNumber);
-      };
+      const handlePageChangeMonth = () =>  
+      {
+        if(currentPageMonth<=totalPagesMonth-1)
+        {
+        setCurrentPageMonth(currentPageMonth+1);
+        }
+        else
+        setCurrentPageMonth(0)
+        
+      }
+
+        const handlePageChangeDay = () =>
+        {
+            if(currentPage<=totalPages-1)
+            {
+            setCurrentPage(currentPage+1);
+            }
+            else
+            setCurrentPage(0)
+        }
 
   
     useEffect(() => {
@@ -66,8 +84,14 @@ function DoctorHome(){
     }, []);
     useEffect(() => {
         console.log(date)
-        checkAppointmentsOnDate(date);
+        checkAppointmentsOnDate(date)
+        checkAppointmentsOnMonth(date);
     }, [date]);
+    useEffect(() => {
+        console.log(currentPageMonth)
+       
+        checkAppointmentsOnMonth(date);
+    }, [currentPageMonth]);
     const dayHandler = () => {	
         setDHandler(true);
     }
@@ -78,14 +102,20 @@ function DoctorHome(){
           setDate(date)  
           const passeddate=moment(date).format('YYYY-MM-DD');
           const data = {  uuid:currentUser.uuid,date:passeddate,pageable:pageable};
-          const url = 'http://localhost:8080/appointment/doc/day/'+currentUser.uuid+"/"+passeddate+"?page="+pageable.page+"&size="+pageable.size+"&sort="+pageable.sort;
+          
+          const url = 'http://localhost:8080/appointment/doc/day/'+currentUser.uuid+"/"+passeddate+"?page="+currentPage+"&size="+pageable.size+"&sort="+pageable.sort;
               axios
                   .get(url,data)
                   .then((res) => { 
+                    console.log("DAYDATE	APPOINTMENTS")
+                      
                       console.log(res.data);
                       setDayDateAppointments(res.data.content);
                       setTotalPages(res.data.totalPages);
                       console.log(dayDateAppointments)
+                 
+                     
+                      
                      
                   })
                   .catch((err)=> {
@@ -99,19 +129,28 @@ function DoctorHome(){
           }
       }
     
-    const checkAppointmentsOnMonth = (month) => {
-        try{
-            const url = 'http://localhost:8080/appointment/monthdate/'+month;
-            const data = { month:month};
-            const config = { 'content-type': 'application/json' };
-            const res =axios.get(url, data, config);
-            const appointments=res.data;
-            setMonthDateAppointments(appointments);
-        }
-        catch (err){
-            alert(err);
-        }
-    }
+    const checkAppointmentsOnMonth = async (date) => {
+        setDate(date)  
+        const passeddate=moment(date).format('YYYY-MM-DD');
+        const data = {  uuid:currentUser.uuid,date:passeddate,pageable:pageable};
+        
+        const url = 'http://localhost:8080/appointment/doc/month/'+currentUser.uuid+"/"+passeddate+"?page="+currentPageMonth+"&size="+pageable.size+"&sort="+pageable.sort;
+            axios
+                .get(url,data)
+                .then((res) => { 
+                    console.log(res.data);
+                    setMonthDateAppointments(res.data.content);
+                    setTotalPagesMonth(res.data.totalPages);
+                    console.log(monthDateAppointments)    
+                })
+                .catch((err)=> {
+                    console.log(err);
+                });
+
+      }
+        
+       
+
 
     const checkAppointmentsOnYear = (year) => {
         try{
@@ -143,7 +182,7 @@ function DoctorHome(){
                 <div>
                     <h3>Pick a date</h3>
                     <Calendar
-                    onChange={checkAppointmentsOnDate}
+                    onChange={checkAppointmentsOnMonth}
                     value={date}
                     showNeighboringMonth={false}
                     locale={"en-US"}
@@ -151,6 +190,56 @@ function DoctorHome(){
                     
 
                     <h3>Appointments on month {moment(date).format('MM')}</h3>
+                    <table>
+                <tr>
+                    <th>Appointment ID</th>
+                    <th>Donor ID</th>
+                    <th>City</th>
+                    <th>Region</th>
+                    <th>Date</th>
+
+                </tr>
+               
+                { 
+                   monthDateAppointments&&monthDateAppointments.map(appointment=> {
+                       
+                        return (
+                            <tr>
+                                <td>{++index1}</td>
+                                <td>{appointment.donorid}</td>
+                                <td>{appointment.lcity}</td>
+                                <td>{appointment.lregion}</td>
+                                <td>{moment(appointment.date).format('YYYY-MM-DD')}</td>
+                            </tr>
+
+                        )
+                    }
+                   
+                   
+               )
+               
+               }
+                
+                   
+                
+            </table>
+            <Pagination
+            count={totalPages}
+            page={currentPageMonth}
+            siblingCount={1}
+            boundaryCount={1}
+            variant="outlined"
+            shape="rounded"
+            onChange={handlePageChangeMonth}
+            />
+                    
+             </div>
+                
+               :null
+                }
+
+                <div>
+                <h3>Appointments on date {moment(date).format('YYYY-MM-DD')}</h3>
                     <table>
                 <tr>
                     <th>Appointment ID</th>
@@ -165,7 +254,7 @@ function DoctorHome(){
                        
                         return (
                             <tr>
-                                <td>{index++}</td>
+                                <td>{++index2}</td>
                                 <td>{appointment.donorid}</td>
                                 <td>{appointment.lcity}</td>
                                 <td>{appointment.lregion}</td>
@@ -176,7 +265,9 @@ function DoctorHome(){
                     }
                    
                    
-               ) }
+               )
+               
+               }
                 
                    
                 
@@ -188,13 +279,9 @@ function DoctorHome(){
             boundaryCount={1}
             variant="outlined"
             shape="rounded"
-            onChange={handlePageChange}
+            onChange={handlePageChangeDay}
             />
-                    
-             </div>
-                
-               :null
-                }
+                </div>
                 </form>
             </div>
         )
